@@ -9,7 +9,7 @@ use src\Router\Route\Route;
 
 class Router
 {
-    /** @var Route[] */
+    /** @var array<string, Route> */
     private array $routes = [];
 
     public function addRoute(
@@ -18,19 +18,28 @@ class Router
         Closure $handler,
     ): Router {
         $route = new Route(method:  $method, path: $path, handler: $handler);
-        $this->routes[] = $route;
+        $this->routes[$path] = $route;
 
         return $this;
     }
 
     public function init(): void {
-        foreach ($this->routes as $route) {
-            if ($_SERVER['REQUEST_METHOD'] === $route->method->value && $_SERVER['REQUEST_URI'] === $route->path) {
-                ($route->handler)();
-                return;
-            }
-        };
-        echo 404;
+        if (empty($this->routes)) {
+            echo 404;
+            return;
+        }
+        $route = $this->routes[$_SERVER['REQUEST_URI']];
+        if (!isset($route)){
+            echo 404;
+             return;
+        }
+        if ($route->method->value !== $_SERVER['REQUEST_METHOD']){
+           echo 405;
+            return;
+        }
+
+        echo ($route->handler)();
+
 
     }
 }
