@@ -1,22 +1,30 @@
 <?php
-require 'src/Router/Route.php';
-require 'src/Router/Router.php';
-require 'src/Router/HttpMethod.php';
+require 'src/share/Validator/ValidatorInterface.php';
+require 'src/share/Http/HttpResponse/HttpResponse.php';
+require 'src/share/Http/HttpRequest/HttpRequest.php';
+require 'src/share/Http/HttpStatus/HttpStatus.php';
+require 'src/share/Router/RouteValidator.php';
+require 'src/share/Router/HttpMethod.php';
+require 'src/share/Router/Route.php';
+require 'src/share/Router/Router.php';
 
-use src\Router\Router;
+use src\share\Router\HttpMethod;
+use src\share\Router\Router;
+use src\share\Router\RouteValidator;
 
-$router = new Router();
+$routerValidator = new RouteValidator();
+$router = new Router($routerValidator);
 
 $router->addRoute(
     method: HttpMethod::GET,
     path: '/test',
     handler: function () {
-        echo 'Test';
+       return 'Test';
     }
 )->addRoute(
     method: HttpMethod::GET,
     path: '/test1',
     handler: function () {
-        echo 'Test1';
+        return 'Test1';
     }
 )->init();

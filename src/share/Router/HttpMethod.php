@@ -1,6 +1,8 @@
 <?php
 
-enum HttpMethod: string {
+namespace src\share\Router;
+enum HttpMethod: string
+{
     case GET = 'GET';
     case POST = 'POST';
     case PUT = 'PUT';
