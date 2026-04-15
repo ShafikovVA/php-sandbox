@@ -1,6 +1,6 @@
 <?php
 
-namespace src\share\Router;
+namespace src\share\Router\Enums;
 enum HttpMethod: string
 {
     case GET = 'GET';
